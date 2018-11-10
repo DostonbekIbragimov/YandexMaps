@@ -28,19 +28,20 @@ public class MainActivity extends AppCompatActivity implements UserLocationObjec
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // установка ключа разработчика
         MapKitFactory.setApiKey(MAPKIT_API_KEY);
-
         MapKitFactory.initialize(this);
         setContentView(R.layout.activity_main);
 
-        // Укажите имя activity вместо map.
+        // Укажите имя activity
         mapView = findViewById(R.id.mapview);
+        // Устанавливаем начальную точку и масштаб
         mapView.getMap().move(new CameraPosition(new Point(0, 0), 14, 0, 0));
-
+        // Установка слоя для отрисовки пользовательского местоположения
         userLocationLayer = mapView.getMap().getUserLocationLayer();
         userLocationLayer.setEnabled(true);
+        userLocationLayer.setAutoZoomEnabled(true);
         userLocationLayer.setHeadingEnabled(true);
-        Log.d("Main", userLocationLayer.isEnabled() + "");
         userLocationLayer.setObjectListener(this);
 
     }
@@ -66,28 +67,13 @@ public class MainActivity extends AppCompatActivity implements UserLocationObjec
                 new PointF((float) (mapView.getWidth() * 0.5), (float) (mapView.getHeight() * 0.5)),
                 new PointF((float) (mapView.getWidth() * 0.5), (float) (mapView.getHeight() * 0.83)));
 
+        // При определении направления движения устанавливается следующая иконка
         userLocationView.getArrow().setIcon(ImageProvider.fromResource(
                 this, R.drawable.user_arrow));
-
-        CompositeIcon pinIcon = userLocationView.getPin().useCompositeIcon();
-        pinIcon.setIcon(
-                "icon",
-                ImageProvider.fromResource(this, R.drawable.yandex_logo_ru),
-                new IconStyle().setAnchor(new PointF(0f, 0f))
-                        .setRotationType(RotationType.ROTATE)
-                        .setZIndex(0f)
-                        .setScale(1f)
-        );
-
-        pinIcon.setIcon(
-                "pin",
-                ImageProvider.fromResource(this, R.drawable.yandex_logo_ru_white),
-                new IconStyle().setAnchor(new PointF(0.5f, 0.5f))
-                        .setRotationType(RotationType.ROTATE)
-                        .setZIndex(1f)
-                        .setScale(0.5f)
-        );
-
+        // При получении координат местоположения устанавливается следующая иконка
+        userLocationView.getPin().setIcon(ImageProvider.fromResource(
+                this, R.drawable.user_arrow));
+        // Обозначается точность определения местоположения с помощью окружности
         userLocationView.getAccuracyCircle().setFillColor(Color.BLUE);
 
     }

@@ -31,9 +31,8 @@ public class MainActivity extends AppCompatActivity implements UserLocationObjec
         // установка ключа разработчика
         MapKitFactory.setApiKey(MAPKIT_API_KEY);
         MapKitFactory.initialize(this);
-        setContentView(R.layout.activity_main);
-
         // Укажите имя activity
+        setContentView(R.layout.activity_main);
         mapView = findViewById(R.id.mapview);
         // Устанавливаем начальную точку и масштаб
         mapView.getMap().move(new CameraPosition(new Point(0, 0), 14, 0, 0));
@@ -43,16 +42,7 @@ public class MainActivity extends AppCompatActivity implements UserLocationObjec
         userLocationLayer.setAutoZoomEnabled(true);
         userLocationLayer.setHeadingEnabled(true);
         userLocationLayer.setObjectListener(this);
-
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        MapKitFactory.getInstance().onStop();
-        mapView.onStop();
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -60,6 +50,14 @@ public class MainActivity extends AppCompatActivity implements UserLocationObjec
         mapView.onStart();
 
     }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        MapKitFactory.getInstance().onStop();
+        mapView.onStop();
+    }
+
+
 
     @Override
     public void onObjectAdded(@NonNull UserLocationView userLocationView) {
